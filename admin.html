@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week4後台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="text-end mt-4">
+                <!-- Button trigger modal-->
+                <button type="button" class="btn btn-primary" @click="openModal('add')">建立新的產品</button>
+            </div>
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th width="120">分類</th>
+                        <th>產品名稱</th>
+                        <th width="120">原價</th>
+                        <th width="120">售價</th>
+                        <th width="100">是否啟用</th>
+                        <th width="120">編輯</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="product in products">
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.title }}</td>
+                        <td class="text-end">{{ product.origin_price }}</td>
+                        <td class="text-end">{{ product.price }}</td>
+                        <td>
+                            <span class="text-success" v-if="product.is_enabled">啟用</span>
+                            <span v-else>未啟用</span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-primary btn-sm" @click="openModal('edit', product)">編輯</button>
+                                <button type="button" class="btn btn-outline-danger btn-sm" @click="openModal('delete', product)">刪除</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination :pagination="pagination" @get-products-emit="getProducts"></pagination>
+        </div>
+        <!-- Modal -->
+        <product-modal-component :temp-product="tempProduct" :is-new="isNew" @create-images-emit="createImages" @update-product-emit="updateProduct"></product-modal-component>
+        <del-product-modal-component :temp-product="tempProduct" @delete-product-emit="deleteProduct"></del-product-modal-component>
+        <!-- Modal -->
+    </div>
+
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <script src="js/admin.js" type="module"></script>
+</body>
+</html>
